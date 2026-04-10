@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LuckyDraw</title>
+    <meta
+      name="description"
+      content="Sorteador online de nomes, números e itens personalizados. Rápido, gratuito e fácil de usar."
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="src/css/main.css" />
+  </head>
+  <body>
+    <canvas id="bgCanvas" aria-hidden="true"></canvas>
+    <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+    <div class="app-shell">
+      <nav class="topnav">
+        <div class="nav-brand">
+          <div class="brand-icon" aria-hidden="true">
+            <img src="./favicon.ico" alt="" />
+          </div>
+          <span class="brand-name" data-i18n="brandTitle">Sorteador</span>
+          <span class="brand-logo" data-i18n="brandName">LuckyDraw</span>
+        </div>
+        <div class="nav-end">
+          <div class="lang-group" role="group" aria-label="Idioma">
+            <button
+              id="langPtBtn"
+              class="lang-btn active"
+              type="button"
+              data-lang="pt-BR"
+            >
+              <img
+                src="https://flagcdn.com/w40/br.png"
+                alt="Brasil"
+                class="flag-badge"
+                width="18"
+                height="13"
+              />
+              <span>PT</span>
+            </button>
+            <button
+              id="langEnBtn"
+              class="lang-btn"
+              type="button"
+              data-lang="en-US"
+            >
+              <img
+                src="https://flagcdn.com/w40/us.png"
+                alt="United States"
+                class="flag-badge"
+                width="18"
+                height="13"
+              />
+              <span>EN</span>
+            </button>
+          </div>
+          <button
+            id="themeToggleBtn"
+            class="theme-btn"
+            type="button"
+            aria-pressed="false"
+          >
+            <i class="bi bi-moon-stars-fill theme-icon"></i>
+            <span class="theme-toggle-label" data-i18n="themeDark"
+              >Tema escuro</span
+            >
+          </button>
+        </div>
+      </nav>
+
+      <div class="mode-strip">
+        <div
+          class="mode-tabs-group"
+          role="tablist"
+          aria-label="Modo de sorteio"
+        >
+          <button
+            class="mode-tab active"
+            data-mode="names"
+            role="tab"
+            aria-selected="true"
+          >
+            <i class="bi bi-people-fill"></i>
+            <span data-i18n="modeNames">Nomes</span>
+          </button>
+          <button
+            class="mode-tab"
+            data-mode="numbers"
+            role="tab"
+            aria-selected="false"
+          >
+            <i class="bi bi-hash"></i>
+            <span data-i18n="modeNumbers">Números</span>
+          </button>
+          <button
+            class="mode-tab"
+            data-mode="items"
+            role="tab"
+            aria-selected="false"
+          >
+            <i class="bi bi-list-check"></i>
+            <span data-i18n="modeItems">Itens</span>
+          </button>
+          <button
+            class="mode-tab"
+            data-mode="teams"
+            role="tab"
+            aria-selected="false"
+          >
+            <i class="bi bi-diagram-3-fill"></i>
+            <span data-i18n="modeTeams">Equipes</span>
+          </button>
+          <button
+            class="mode-tab"
+            data-mode="coin"
+            role="tab"
+            aria-selected="false"
+          >
+            <i class="bi bi-circle-half"></i>
+            <span data-i18n="modeCoin">Moeda</span>
+          </button>
+          <button
+            class="mode-tab"
+            data-mode="letters"
+            role="tab"
+            aria-selected="false"
+          >
+            <i class="bi bi-type"></i>
+            <span data-i18n="modeLetters">Letras</span>
+          </button>
+          <button
+            class="mode-tab"
+            data-mode="wheel"
+            role="tab"
+            aria-selected="false"
+          >
+            <i class="bi bi-arrow-repeat"></i>
+            <span data-i18n="modeWheel">Roleta</span>
+          </button>
+          <button
+            class="mode-tab"
+            data-mode="order"
+            role="tab"
+            aria-selected="false"
+          >
+            <i class="bi bi-list-ol"></i>
+            <span data-i18n="modeOrder">Lista</span>
+          </button>
+          <button
+            class="mode-tab"
+            data-mode="timer"
+            role="tab"
+            aria-selected="false"
+          >
+            <i class="bi bi-stopwatch-fill"></i>
+            <span data-i18n="modeTimer">Timer</span>
+          </button>
+        </div>
+        <button id="loadSampleBtn" class="sample-btn" type="button">
+          <i class="bi bi-stars"></i>
+          <span data-i18n="loadSample">Exemplo</span>
+        </button>
+      </div>
+
+      <!-- Modos clássicos -->
+      <main class="sorteador-grid" id="classicModes">
+        <section class="input-col">
+          <form id="raffleForm">
+            <div class="field-block" id="textEntriesGroup">
+              <label
+                for="entriesInput"
+                class="field-label"
+                data-i18n="entriesLabel"
+                >Participantes ou itens</label
+              >
+              <textarea id="entriesInput" class="field-textarea"></textarea>
+              <p class="field-hint" data-i18n="entriesHint">
+                Um por linha. Vírgulas também são aceitas.
+              </p>
+            </div>
+
+            <div
+              class="field-block number-block hidden"
+              id="numberEntriesGroup"
+            >
+              <div class="number-row">
+                <div class="mini-field">
+                  <label
+                    for="minNumber"
+                    class="field-label"
+                    data-i18n="minNumber"
+                    >Mínimo</label
+                  >
+                  <input
+                    id="minNumber"
+                    class="field-input"
+                    type="number"
+                    value="1"
+                  />
+                </div>
+                <div class="mini-field">
+                  <label
+                    for="maxNumber"
+                    class="field-label"
+                    data-i18n="maxNumber"
+                    >Máximo</label
+                  >
+                  <input
+                    id="maxNumber"
+                    class="field-input"
+                    type="number"
+                    value="100"
+                  />
+                </div>
+                <div class="mini-field">
+                  <label
+                    for="numberStep"
+                    class="field-label"
+                    data-i18n="stepLabel"
+                    >Intervalo</label
+                  >
+                  <input
+                    id="numberStep"
+                    class="field-input"
+                    type="number"
+                    min="1"
+                    value="1"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="options-strip">
+              <div class="winner-field">
+                <label
+                  for="winnerCount"
+                  class="field-label"
+                  data-i18n="winnerCount"
+                  >Vencedores</label
+                >
+                <input
+                  id="winnerCount"
+                  class="field-input winner-input"
+                  type="number"
+                  min="1"
+                  value="1"
+                />
+              </div>
+              <label class="toggle-pill" for="allowRepeats">
+                <input type="checkbox" id="allowRepeats" />
+                <span class="toggle-track"
+                  ><span class="toggle-thumb"></span
+                ></span>
+                <span class="toggle-label" data-i18n="allowRepeatsTitle"
+                  >Repetição</span
+                >
+              </label>
+              <label class="toggle-pill" for="animateDraw">
+                <input type="checkbox" id="animateDraw" checked />
+                <span class="toggle-track"
+                  ><span class="toggle-thumb"></span
+                ></span>
+                <span class="toggle-label" data-i18n="animateTitle"
+                  >Animação</span
+                >
+              </label>
+              <label class="toggle-pill" id="elimToggleWrap" for="elimMode">
+                <input type="checkbox" id="elimMode" />
+                <span class="toggle-track"
+                  ><span class="toggle-thumb"></span
+                ></span>
+                <span class="toggle-label" data-i18n="elimModeTitle"
+                  >Eliminação</span
+                >
+              </label>
+              <label class="toggle-pill" for="countdownDraw">
+                <input type="checkbox" id="countdownDraw" />
+                <span class="toggle-track"
+                  ><span class="toggle-thumb"></span
+                ></span>
+                <span class="toggle-label" data-i18n="countdownTitle"
+                  >Contagem</span
+                >
+              </label>
+            </div>
+
+            <div class="cta-row">
+              <button id="drawBtn" class="primary-button" type="submit">
+                <i class="bi bi-shuffle"></i>
+                <span id="drawBtnLabel" data-i18n="drawBtn">Sortear agora</span>
+              </button>
+              <button
+                id="resetFormBtn"
+                class="icon-btn"
+                type="button"
+                aria-label="Limpar campos"
+              >
+                <i class="bi bi-arrow-counterclockwise"></i>
+              </button>
+            </div>
+
+            <p id="statusMessage" class="status-message" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="result-col">
+          <div class="result-header">
+            <span class="eyebrow" data-i18n="resultsEyebrow">Resultado</span>
+            <div class="result-actions">
+              <button id="copyResultsBtn" class="ghost-btn" type="button">
+                <i class="bi bi-copy"></i>
+                <span data-i18n="copyBtn">Copiar</span>
+              </button>
+              <button id="exportResultsBtn" class="ghost-btn" type="button">
+                <i class="bi bi-download"></i>
+                <span data-i18n="exportBtn">Exportar</span>
+              </button>
+              <button id="clearResultsBtn" class="ghost-btn" type="button">
+                <i class="bi bi-x-lg"></i>
+                <span data-i18n="clearBtn">Limpar</span>
+              </button>
+            </div>
+          </div>
+          <div id="rollingDisplay" class="rolling-display"></div>
+          <div
+            id="resultsContainer"
+            class="results-container empty-state"
+          ></div>
+
+          <!-- Painel ranking de eliminação (nomes/itens) -->
+          <div id="classicElimPanel" class="elim-panel hidden">
+            <div class="elim-panel-header">
+              <span class="eyebrow" data-i18n="elimRankingLabel">Ranking</span>
+              <div class="elim-panel-actions">
+                <button id="copyElimBtn" class="ghost-btn" type="button">
+                  <i class="bi bi-copy"></i>
+                  <span data-i18n="copyBtn">Copiar</span>
+                </button>
+                <button
+                  id="resetElimBtn"
+                  class="ghost-btn danger-btn"
+                  type="button"
+                >
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                  <span data-i18n="elimResetBtn">Reiniciar</span>
+                </button>
+              </div>
+            </div>
+            <p id="elimRemainingInfo" class="elim-remaining-info"></p>
+            <ol id="elimRankingList" class="elim-ranking-list"></ol>
+          </div>
+        </section>
+      </main>
+
+      <!-- Modo Equipes -->
+      <main class="special-mode hidden" id="teamsMode">
+        <div class="special-layout">
+          <section class="input-col">
+            <div class="field-block">
+              <label
+                for="teamsInput"
+                class="field-label"
+                data-i18n="teamsEntriesLabel"
+                >Participantes</label
+              >
+              <textarea
+                id="teamsInput"
+                class="field-textarea"
+                data-i18n-placeholder="namesPlaceholder"
+              ></textarea>
+              <p class="field-hint" data-i18n="teamsHint">Um nome por linha.</p>
+            </div>
+            <div class="options-strip">
+              <div class="winner-field">
+                <label
+                  for="teamsCount"
+                  class="field-label"
+                  data-i18n="teamsCountLabel"
+                  >Nº de equipes</label
+                >
+                <input
+                  id="teamsCount"
+                  class="field-input winner-input"
+                  type="number"
+                  min="2"
+                  value="2"
+                />
+              </div>
+              <label class="toggle-pill" for="teamsCountdown">
+                <input type="checkbox" id="teamsCountdown" />
+                <span class="toggle-track"
+                  ><span class="toggle-thumb"></span
+                ></span>
+                <span class="toggle-label" data-i18n="countdownTitle"
+                  >Contagem</span
+                >
+              </label>
+            </div>
+            <div class="cta-row">
+              <button id="teamsDrawBtn" class="primary-button" type="button">
+                <i class="bi bi-diagram-3-fill"></i>
+                <span data-i18n="teamsDrawBtn">Sortear equipes</span>
+              </button>
+              <button
+                id="teamsResetBtn"
+                class="icon-btn"
+                type="button"
+                aria-label="Limpar"
+              >
+                <i class="bi bi-arrow-counterclockwise"></i>
+              </button>
+            </div>
+            <p id="teamsStatus" class="status-message" aria-live="polite"></p>
+          </section>
+          <section class="result-col">
+            <div class="result-header">
+              <span class="eyebrow" data-i18n="teamsResultLabel">Equipes</span>
+            </div>
+            <div id="teamsResult" class="teams-result"></div>
+          </section>
+        </div>
+      </main>
+
+      <!-- Modo Cara ou Coroa -->
+      <main class="special-mode hidden" id="coinMode">
+        <div class="coin-layout">
+          <div class="coin-arena">
+            <div class="coin-scene">
+              <div class="coin" id="coinEl">
+                <div class="coin-face coin-heads">
+                  <span class="coin-symbol">👑</span>
+                  <span class="coin-label" data-i18n="coinHeads">Cara</span>
+                </div>
+                <div class="coin-face coin-tails">
+                  <span class="coin-symbol">⭐</span>
+                  <span class="coin-label" data-i18n="coinTails">Coroa</span>
+                </div>
+              </div>
+            </div>
+            <p
+              class="coin-result-text"
+              id="coinResultText"
+              data-i18n="coinReady"
+            >
+              Clique para lançar a moeda
+            </p>
+            <button id="coinBtn" class="primary-button coin-btn" type="button">
+              <i class="bi bi-circle-half"></i>
+              <span data-i18n="coinBtn">Lançar moeda</span>
+            </button>
+          </div>
+          <div class="coin-history-panel">
+            <div class="result-header">
+              <span class="eyebrow" data-i18n="coinHistoryLabel"
+                >Últimos lançamentos</span
+              >
+              <button id="coinClearBtn" class="ghost-btn" type="button">
+                <i class="bi bi-trash3"></i>
+                <span data-i18n="coinClearBtn">Limpar</span>
+              </button>
+            </div>
+            <div id="coinHistory" class="coin-log"></div>
+            <div class="coin-stats">
+              <div class="coin-stat-item">
+                <span class="coin-stat-value" id="coinHeadsCount">0</span>
+                <span class="coin-stat-label" data-i18n="coinHeads">Cara</span>
+              </div>
+              <div class="coin-stat-div"></div>
+              <div class="coin-stat-item">
+                <span class="coin-stat-value" id="coinTailsCount">0</span>
+                <span class="coin-stat-label" data-i18n="coinTails">Coroa</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Modo Letras -->
+      <main class="special-mode hidden" id="lettersMode">
+        <div class="letters-layout">
+          <div class="letters-arena">
+            <div class="letter-display" id="letterDisplay">
+              <div class="letter-reel" id="letterReel"></div>
+            </div>
+            <p
+              class="letters-result-text"
+              id="letterResultText"
+              data-i18n="lettersReady"
+            >
+              Clique para sortear uma letra
+            </p>
+            <button
+              id="letterBtn"
+              class="primary-button coin-btn"
+              type="button"
+            >
+              <i class="bi bi-type"></i>
+              <span data-i18n="lettersBtn">Sortear letra</span>
+            </button>
+          </div>
+          <div class="coin-history-panel">
+            <div class="result-header">
+              <span class="eyebrow" data-i18n="lettersHistoryLabel"
+                >Últimas letras</span
+              >
+              <button id="lettersClearBtn" class="ghost-btn" type="button">
+                <i class="bi bi-trash3"></i>
+                <span data-i18n="lettersClearBtn">Limpar</span>
+              </button>
+            </div>
+            <div id="lettersHistory" class="coin-log"></div>
+            <div class="coin-stats">
+              <div class="coin-stat-item">
+                <span class="coin-stat-value" id="lettersCount">0</span>
+                <span class="coin-stat-label" data-i18n="lettersCountLabel"
+                  >Sorteios</span
+                >
+              </div>
+              <div class="coin-stat-div"></div>
+              <div class="coin-stat-item">
+                <span class="coin-stat-value" id="lettersLastValue">—</span>
+                <span class="coin-stat-label" data-i18n="lettersLastLabel"
+                  >Última</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Modo Roleta -->
+      <main class="special-mode hidden" id="wheelMode">
+        <div class="wheel-layout">
+          <section class="wheel-input-col">
+            <div class="field-block">
+              <label
+                for="wheelInput"
+                class="field-label"
+                data-i18n="wheelEntriesLabel"
+                >Opções da roleta</label
+              >
+              <textarea
+                id="wheelInput"
+                class="field-textarea"
+                data-i18n-placeholder="namesPlaceholder"
+              ></textarea>
+              <p class="field-hint" data-i18n="wheelHint">
+                Uma opção por linha. Mínimo 2.
+              </p>
+            </div>
+            <div class="options-strip">
+              <label class="toggle-pill" for="wheelElimMode">
+                <input type="checkbox" id="wheelElimMode" />
+                <span class="toggle-track"
+                  ><span class="toggle-thumb"></span
+                ></span>
+                <span class="toggle-label" data-i18n="wheelElimToggle"
+                  >Modo Eliminação</span
+                >
+              </label>
+            </div>
+            <div class="cta-row">
+              <button id="wheelBuildBtn" class="primary-button" type="button">
+                <i class="bi bi-gear-fill"></i>
+                <span data-i18n="wheelBuildBtn">Montar roleta</span>
+              </button>
+              <button
+                id="wheelClearBtn"
+                class="icon-btn"
+                type="button"
+                aria-label="Limpar roleta"
+              >
+                <i class="bi bi-trash3"></i>
+              </button>
+            </div>
+            <p id="wheelStatus" class="status-message" aria-live="polite"></p>
+          </section>
+          <section class="wheel-arena">
+            <div class="wheel-wrap">
+              <div class="wheel-pointer" aria-hidden="true"></div>
+              <canvas id="wheelCanvas" width="420" height="420"></canvas>
+            </div>
+            <p
+              class="wheel-result-text"
+              id="wheelResultText"
+              data-i18n="wheelReady"
+            >
+              Monte a roleta e gire!
+            </p>
+            <button
+              id="wheelSpinBtn"
+              class="primary-button"
+              type="button"
+              disabled
+            >
+              <i class="bi bi-arrow-repeat"></i>
+              <span data-i18n="wheelSpinBtn">Girar!</span>
+            </button>
+          </section>
+        </div>
+        <div id="wheelElimPanel" class="wheel-elim-section hidden">
+          <div class="result-header" style="margin-bottom: 16px">
+            <span class="eyebrow" data-i18n="wheelElimLabel"
+              >Ranking — Eliminação</span
+            >
+            <button id="wheelElimCopyBtn" class="ghost-btn" type="button">
+              <i class="bi bi-copy"></i>
+              <span data-i18n="copyBtn">Copiar</span>
+            </button>
+          </div>
+          <ol id="wheelElimList" class="elim-list"></ol>
+        </div>
+      </main>
+
+      <!-- Modo Lista Aleatória -->
+      <main class="special-mode hidden" id="orderMode">
+        <div class="special-layout">
+          <section class="input-col">
+            <div class="field-block">
+              <label
+                for="orderInput"
+                class="field-label"
+                data-i18n="orderEntriesLabel"
+                >Itens para ordenar</label
+              >
+              <textarea
+                id="orderInput"
+                class="field-textarea"
+                data-i18n-placeholder="namesPlaceholder"
+              ></textarea>
+              <p class="field-hint" data-i18n="orderHint">
+                Um item por linha. Todos aparecem em ordem aleatória.
+              </p>
+            </div>
+            <div class="cta-row">
+              <button id="orderDrawBtn" class="primary-button" type="button">
+                <i class="bi bi-shuffle"></i>
+                <span data-i18n="orderDrawBtn">Gerar ordem</span>
+              </button>
+              <button
+                id="orderResetBtn"
+                class="icon-btn"
+                type="button"
+                aria-label="Limpar"
+              >
+                <i class="bi bi-arrow-counterclockwise"></i>
+              </button>
+            </div>
+            <div class="options-strip" style="margin-top: 0; margin-bottom: 0">
+              <label class="toggle-pill" for="orderCountdown">
+                <input type="checkbox" id="orderCountdown" />
+                <span class="toggle-track"
+                  ><span class="toggle-thumb"></span
+                ></span>
+                <span class="toggle-label" data-i18n="countdownTitle"
+                  >Contagem</span
+                >
+              </label>
+            </div>
+            <p id="orderStatus" class="status-message" aria-live="polite"></p>
+          </section>
+          <section class="result-col">
+            <div class="result-header">
+              <span class="eyebrow" data-i18n="orderResultLabel"
+                >Ordem sorteada</span
+              >
+              <button id="copyOrderBtn" class="ghost-btn" type="button">
+                <i class="bi bi-copy"></i>
+                <span data-i18n="copyBtn">Copiar</span>
+              </button>
+            </div>
+            <ol id="orderResult" class="order-list"></ol>
+            <p id="orderEmpty" class="empty-hint" data-i18n="orderEmpty">
+              Adicione itens e clique em Gerar ordem.
+            </p>
+          </section>
+        </div>
+      </main>
+
+      <!-- Modo Timer -->
+      <main class="special-mode hidden" id="timerMode">
+        <div class="timer-layout">
+          <div class="input-col">
+            <div class="field-block number-block">
+              <label class="field-label" data-i18n="timerRangeLabel"
+                >Intervalo (segundos)</label
+              >
+              <div class="number-row" style="margin-top: 10px">
+                <div class="mini-field">
+                  <label
+                    for="timerMin"
+                    class="field-label"
+                    data-i18n="timerMinLabel"
+                    >Mínimo</label
+                  >
+                  <input
+                    id="timerMin"
+                    class="field-input"
+                    type="number"
+                    min="1"
+                    max="3600"
+                    value="10"
+                  />
+                </div>
+                <div class="mini-field">
+                  <label
+                    for="timerMax"
+                    class="field-label"
+                    data-i18n="timerMaxLabel"
+                    >Máximo</label
+                  >
+                  <input
+                    id="timerMax"
+                    class="field-input"
+                    type="number"
+                    min="1"
+                    max="3600"
+                    value="60"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="options-strip">
+              <label class="toggle-pill" for="timerHiddenMode">
+                <input type="checkbox" id="timerHiddenMode" checked />
+                <span class="toggle-track"
+                  ><span class="toggle-thumb"></span
+                ></span>
+                <span class="toggle-label" data-i18n="timerHiddenToggle"
+                  >Modo surpresa</span
+                >
+              </label>
+            </div>
+            <div class="cta-row">
+              <button id="timerStartBtn" class="primary-button" type="button">
+                <i class="bi bi-play-fill"></i>
+                <span id="timerStartLabel" data-i18n="timerStartBtn"
+                  >Iniciar timer</span
+                >
+              </button>
+              <button
+                id="timerResetBtn"
+                class="icon-btn"
+                type="button"
+                aria-label="Resetar"
+              >
+                <i class="bi bi-arrow-counterclockwise"></i>
+              </button>
+            </div>
+            <p id="timerStatus" class="status-message" aria-live="polite"></p>
+            <div class="timer-hint-box">
+              <i class="bi bi-lightbulb-fill"></i>
+              <p data-i18n="timerHintText">
+                No modo surpresa o tempo fica oculto — perfeito para
+                batata-quente e jogos de tensão!
+              </p>
+            </div>
+          </div>
+          <div class="timer-display-col">
+            <div class="timer-display" id="timerDisplay">
+              <span
+                class="timer-mode-tag"
+                id="timerModeTag"
+                data-i18n="timerModeTagSurprise"
+                >🎲 Surpresa</span
+              >
+              <div id="timerFace" class="timer-face">--:--</div>
+              <div id="timerBoom" class="timer-boom hidden">
+                <span class="boom-emoji">💥</span>
+                <p class="boom-text" data-i18n="timerBoomText">
+                  TEMPO ESGOTADO!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Histórico -->
+      <section class="history-section reveal" id="historySection">
+        <div class="history-locked hidden" id="historyLocked">
+          <div class="history-locked-inner">
+            <i class="bi bi-lock-fill"></i>
+            <p data-i18n="historyLockedTitle">Histórico bloqueado</p>
+            <p class="history-locked-desc" data-i18n="historyLockedDesc">
+              Aceite os cookies para ver o histórico de sorteios.
+            </p>
+            <button
+              id="reopenCookieBtn"
+              class="cookie-reopen-inline-btn"
+              type="button"
+            >
+              <i class="bi bi-shield-check"></i>
+              <span data-i18n="historyLockedCta">Gerenciar cookies</span>
+            </button>
+          </div>
+        </div>
+        <div id="historyContent">
+          <div class="history-bar">
+            <div>
+              <span class="eyebrow" data-i18n="historyEyebrow">Histórico</span>
+              <h2 class="section-title" data-i18n="historyTitle">
+                Sorteios recentes
+              </h2>
+            </div>
+            <button id="clearHistoryBtn" class="ghost-btn" type="button">
+              <i class="bi bi-trash3"></i>
+              <span data-i18n="clearHistory">Limpar</span>
+            </button>
+          </div>
+          <div
+            id="historyTabs"
+            class="history-tabs"
+            role="tablist"
+            aria-label="Filtro de histórico"
+          ></div>
+          <div
+            id="historyContainer"
+            class="history-container empty-state"
+          ></div>
+        </div>
+      </section>
+    </div>
+
+    <template id="resultCardTemplate">
+      <article class="result-card">
+        <span class="result-rank"></span>
+        <strong class="result-value"></strong>
+      </article>
+    </template>
+
+    <!-- Countdown overlay -->
+    <div id="countdownOverlay" class="countdown-overlay" aria-hidden="true">
+      <div class="countdown-ring">
+        <svg width="160" height="160" viewBox="0 0 100 100">
+          <circle class="countdown-ring-track" cx="50" cy="50" r="45" />
+          <circle
+            id="countdownRingFill"
+            class="countdown-ring-fill"
+            cx="50"
+            cy="50"
+            r="45"
+          />
+        </svg>
+        <span id="countdownNumber" class="countdown-number">3</span>
+      </div>
+    </div>
+
+    <!-- Star toast (bottom-left, shown after delay when cookies accepted) -->
+    <div id="starToast" class="star-toast hidden" role="complementary">
+      <div class="star-toast-body">
+        <i class="bi bi-star-fill star-toast-icon"></i>
+        <div>
+          <p class="star-toast-title" data-i18n="starBannerText">
+            Gostou? Deixe uma estrela no repositório!
+          </p>
+          <a
+            href="https://github.com/leotaborda/LuckyDraw"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="star-toast-link"
+            data-i18n="starBannerCta"
+            >Ver no GitHub</a
+          >
+        </div>
+      </div>
+      <button
+        id="starToastClose"
+        class="star-toast-close"
+        type="button"
+        aria-label="Fechar"
+      >
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+
+    <!-- Cookie reopen FAB (bottom-left, shown when cookies declined) -->
+    <button
+      id="cookieReopenFab"
+      class="cookie-reopen-fab hidden"
+      type="button"
+      aria-label="Gerenciar cookies"
+    >
+      <i class="bi bi-shield-check"></i>
+    </button>
+
+    <!-- Cookie toast -->
+    <div
+      id="cookieToast"
+      class="cookie-toast"
+      role="dialog"
+      aria-label="Aviso de cookies"
+      aria-live="polite"
+    >
+      <div class="cookie-toast-header">
+        <span class="cookie-toast-icon"
+          ><svg
+            version="1.1"
+            id="cookieSvg"
+            x="0px"
+            y="0px"
+            viewBox="0 0 122.88 122.25"
+            xml:space="preserve"
+          >
+            <g>
+              <path
+                d="M101.77,49.38c2.09,3.1,4.37,5.11,6.86,5.78c2.45,0.66,5.32,0.06,8.7-2.01c1.36-0.84,3.14-0.41,3.97,0.95 c0.28,0.46,0.42,0.96,0.43,1.47c0.13,1.4,0.21,2.82,0.24,4.26c0.03,1.46,0.02,2.91-0.05,4.35h0v0c0,0.13-0.01,0.26-0.03,0.38 c-0.91,16.72-8.47,31.51-20,41.93c-11.55,10.44-27.06,16.49-43.82,15.69v0.01h0c-0.13,0-0.26-0.01-0.38-0.03 c-16.72-0.91-31.51-8.47-41.93-20C5.31,90.61-0.73,75.1,0.07,58.34H0.07v0c0-0.13,0.01-0.26,0.03-0.38 C1,41.22,8.81,26.35,20.57,15.87C32.34,5.37,48.09-0.73,64.85,0.07V0.07h0c1.6,0,2.89,1.29,2.89,2.89c0,0.4-0.08,0.78-0.23,1.12 c-1.17,3.81-1.25,7.34-0.27,10.14c0.89,2.54,2.7,4.51,5.41,5.52c1.44,0.54,2.2,2.1,1.74,3.55l0.01,0 c-1.83,5.89-1.87,11.08-0.52,15.26c0.82,2.53,2.14,4.69,3.88,6.4c1.74,1.72,3.9,3,6.39,3.78c4.04,1.26,8.94,1.18,14.31-0.55 C99.73,47.78,101.08,48.3,101.77,49.38L101.77,49.38z M59.28,57.86c2.77,0,5.01,2.24,5.01,5.01c0,2.77-2.24,5.01-5.01,5.01 c-2.77,0-5.01-2.24-5.01-5.01C54.27,60.1,56.52,57.86,59.28,57.86L59.28,57.86z M37.56,78.49c3.37,0,6.11,2.73,6.11,6.11 s-2.73,6.11-6.11,6.11s-6.11-2.73-6.11-6.11S34.18,78.49,37.56,78.49L37.56,78.49z M50.72,31.75c2.65,0,4.79,2.14,4.79,4.79 c0,2.65-2.14,4.79-4.79,4.79c-2.65,0-4.79-2.14-4.79-4.79C45.93,33.89,48.08,31.75,50.72,31.75L50.72,31.75z M119.3,32.4 c1.98,0,3.58,1.6,3.58,3.58c0,1.98-1.6,3.58-3.58,3.58s-3.58-1.6-3.58-3.58C115.71,34.01,117.32,32.4,119.3,32.4L119.3,32.4z M93.62,22.91c2.98,0,5.39,2.41,5.39,5.39c0,2.98-2.41,5.39-5.39,5.39c-2.98,0-5.39-2.41-5.39-5.39 C88.23,25.33,90.64,22.91,93.62,22.91L93.62,22.91z M97.79,0.59c3.19,0,5.78,2.59,5.78,5.78c0,3.19-2.59,5.78-5.78,5.78 c-3.19,0-5.78-2.59-5.78-5.78C92.02,3.17,94.6,0.59,97.79,0.59L97.79,0.59z M76.73,80.63c4.43,0,8.03,3.59,8.03,8.03 c0,4.43-3.59,8.03-8.03,8.03s-8.03-3.59-8.03-8.03C68.7,84.22,72.29,80.63,76.73,80.63L76.73,80.63z M31.91,46.78 c4.8,0,8.69,3.89,8.69,8.69c0,4.8-3.89,8.69-8.69,8.69s-8.69-3.89-8.69-8.69C23.22,50.68,27.11,46.78,31.91,46.78L31.91,46.78z M107.13,60.74c-3.39-0.91-6.35-3.14-8.95-6.48c-5.78,1.52-11.16,1.41-15.76-0.02c-3.37-1.05-6.32-2.81-8.71-5.18 c-2.39-2.37-4.21-5.32-5.32-8.75c-1.51-4.66-1.69-10.2-0.18-16.32c-3.1-1.8-5.25-4.53-6.42-7.88c-1.06-3.05-1.28-6.59-0.61-10.35 C47.27,5.95,34.3,11.36,24.41,20.18C13.74,29.69,6.66,43.15,5.84,58.29l0,0.05v0h0l-0.01,0.13v0C5.07,73.72,10.55,87.82,20.02,98.3 c9.44,10.44,22.84,17.29,38,18.1l0.05,0h0v0l0.13,0.01h0c15.24,0.77,29.35-4.71,39.83-14.19c10.44-9.44,17.29-22.84,18.1-38l0-0.05 v0h0l0.01-0.13v0c0.07-1.34,0.09-2.64,0.06-3.91C112.98,61.34,109.96,61.51,107.13,60.74L107.13,60.74z M116.15,64.04L116.15,64.04 L116.15,64.04L116.15,64.04z M58.21,116.42L58.21,116.42L58.21,116.42L58.21,116.42z"
+              ></path>
+            </g></svg
+        ></span>
+        <div>
+          <div class="cookie-toast-title" data-i18n="cookieTitle">
+            Este site usa cookies
+          </div>
+          <p class="cookie-toast-desc" data-i18n="cookieDesc">
+            Usamos cookies para salvar suas preferências de tema e idioma.
+            Nenhum dado pessoal é coletado.
+          </p>
+        </div>
+      </div>
+      <div class="cookie-toast-actions">
+        <button id="cookieAcceptBtn" class="cookie-accept-btn" type="button">
+          <i class="bi bi-check-lg"></i>
+          <span data-i18n="cookieAccept">Aceitar</span>
+        </button>
+        <button
+          id="cookieDeclineBtn"
+          class="cookie-decline-btn"
+          type="button"
+          data-i18n="cookieDecline"
+        >
+          Recusar
+        </button>
+      </div>
+    </div>
+
+    <script type="module" src="src/js/main.js"></script>
+  </body>
+</html>

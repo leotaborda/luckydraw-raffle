@@ -1,0 +1,199 @@
+.history-section {
+  margin-top: 44px;
+  padding-top: 36px;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+.history-locked {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  border: 1px dashed var(--border-md);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+}
+.history-locked.hidden {
+  display: none;
+}
+.history-locked-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 36px 24px;
+  text-align: center;
+  color: var(--text-soft);
+}
+.history-locked-inner .bi-lock-fill {
+  font-size: 1.8rem;
+  color: var(--dim);
+}
+.history-locked-inner p:first-of-type {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text);
+  margin: 0;
+}
+.history-locked-desc {
+  font-size: 0.78rem;
+  line-height: 1.55;
+  max-width: 260px;
+  margin: 0;
+}
+.cookie-reopen-inline-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 4px;
+  padding: 9px 18px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border-ac);
+  background: var(--ac-dim);
+  color: var(--ac);
+  font-size: 0.81rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--t) var(--ease);
+}
+.cookie-reopen-inline-btn:hover {
+  background: var(--ac);
+  color: #052e16;
+}
+#historyContent.hidden {
+  display: none;
+}
+.history-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-top: 5px;
+}
+.history-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 12px;
+  max-height: 350px;
+  overflow-y: auto;
+}
+.history-card {
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 17px 19px;
+  background: var(--surface);
+  animation: card-in 300ms var(--ease) both;
+  animation-delay: calc(var(--card-index, 0) * 28ms);
+  transition:
+    border-color var(--t),
+    background var(--t);
+}
+.history-card:hover {
+  border-color: var(--border-md);
+  background: var(--surface-hi);
+}
+.history-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.history-header strong {
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+.history-meta {
+  font-size: 0.7rem;
+  color: var(--dim);
+  margin-top: 3px;
+  font-family: var(--mono);
+}
+.history-settings {
+  font-size: 0.74rem;
+  color: var(--text-soft);
+  line-height: 1.55;
+  margin-bottom: 6px;
+  overflow-wrap: anywhere;
+}
+.history-winners {
+  font-size: 0.8rem;
+  font-family: var(--mono);
+  color: var(--ac);
+  overflow-wrap: anywhere;
+  line-height: 1.65;
+}
+
+.history-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.history-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--t) var(--ease);
+  white-space: nowrap;
+}
+.history-tab:hover {
+  border-color: var(--border-md);
+  color: var(--text);
+}
+.history-tab.active {
+  background: var(--ac-dim);
+  border-color: var(--border-ac);
+  color: var(--ac);
+}
+.history-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: var(--r-pill);
+  background: var(--surface-lo);
+  border: 1px solid var(--border);
+  font-size: 0.66rem;
+  font-weight: 700;
+  font-family: var(--mono);
+  color: var(--text-soft);
+}
+.history-tab.active .history-tab-count {
+  background: var(--ac-dim);
+  border-color: var(--border-ac);
+  color: var(--ac);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 440ms var(--ease),
+    transform 440ms var(--ease);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.hidden {
+  display: none !important;
+}

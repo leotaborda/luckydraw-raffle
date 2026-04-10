@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap");
+
+:root {
+  color-scheme: dark;
+
+  --bg: #09090f;
+  --surface: #111119;
+  --surface-hi: #19192a;
+  --surface-lo: #0c0c14;
+  --surface-bd: #1f1f30;
+
+  --border: rgba(255, 255, 255, 0.07);
+  --border-md: rgba(255, 255, 255, 0.13);
+  --border-ac: rgba(110, 231, 183, 0.22);
+
+  --text: #ececf4;
+  --text-soft: #9898b8;
+  --dim: #333348;
+
+  --ac: #6ee7b7;
+  --ac-hi: #a7f3d0;
+  --ac-lo: #34d399;
+  --ac-dim: rgba(110, 231, 183, 0.09);
+  --ac-glow: rgba(110, 231, 183, 0.2);
+  --ac-text: #d1fae5;
+
+  --danger: #f87171;
+  --success: #6ee7b7;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.65);
+  --shadow-ac: 0 4px 32px rgba(110, 231, 183, 0.22);
+
+  --r-xl: 22px;
+  --r-lg: 12px;
+  --r-md: 8px;
+  --r-sm: 5px;
+  --r-pill: 999px;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --t: 180ms;
+
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  --mono: "Space Mono", monospace;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --surface-hi: #f9f8f5;
+  --surface-lo: #f0efe9;
+  --surface-bd: #e8e7e0;
+
+  --border: rgba(0, 0, 0, 0.07);
+  --border-md: rgba(0, 0, 0, 0.13);
+  --border-ac: rgba(5, 150, 105, 0.24);
+
+  --text: #1a1a24;
+  --text-soft: #6b6b80;
+  --dim: #ccc9be;
+
+  --ac: #059669;
+  --ac-hi: #047857;
+  --ac-lo: #10b981;
+  --ac-dim: rgba(5, 150, 105, 0.07);
+  --ac-glow: rgba(5, 150, 105, 0.14);
+  --ac-text: #065f46;
+
+  --danger: #dc2626;
+  --success: #059669;
+
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.06);
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.09);
+  --shadow-ac: 0 4px 24px rgba(5, 150, 105, 0.18);
+}

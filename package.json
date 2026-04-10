@@ -1,0 +1,10 @@
+{
+  "name": "luckydraw",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LuckyDraw - a polished raffle web app for names, numbers, and custom items.",
+  "scripts": {
+    "check": "node --check app.js",
+    "start": "python3 -m http.server 4173"
+  }
+}
