@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./favicon.ico" width="64" height="64" alt="LuckyDraw logo" />
+  <img src="./public/favicon.ico" width="64" height="64" alt="LuckyDraw logo" />
   <h1>LuckyDraw</h1>
   <p>A polished, fast, and fully client-side raffle app — draw names, numbers, teams, letters, spin a wheel, and more.</p>
 

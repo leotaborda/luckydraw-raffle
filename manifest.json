@@ -1,0 +1,20 @@
+{
+  "name": "LuckyDraw – Sorteador Online Grátis",
+  "short_name": "LuckyDraw",
+  "description": "Sorteador online gratuito para nomes, números, equipes, roleta, cara ou coroa e mais. Sem cadastro, 100% no navegador.",
+  "start_url": "/LuckyDraw/",
+  "scope": "/LuckyDraw/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#09090f",
+  "theme_color": "#6ee7b7",
+  "lang": "pt-BR",
+  "categories": ["utilities", "productivity"],
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}

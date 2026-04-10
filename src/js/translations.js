@@ -1,7 +1,7 @@
 export const translations = {
   "pt-BR": {
-    pageTitle: "LuckyDraw",
-    pageDescription: "Sorteador online para nomes, números e itens personalizados.",
+    pageTitle: "LuckyDraw – Sorteador Online Grátis | Nomes, Números, Roleta e Mais",
+    pageDescription: "Sorteie nomes, números, equipes, letras, rode a roleta e muito mais — de graça, sem cadastro e direto no navegador. O melhor sorteador online!",
     brandTitle: "Sorteador",
     brandName: "LuckyDraw",
     themeDark: "Tema escuro",
@@ -149,8 +149,8 @@ export const translations = {
     historyLockedCta: "Gerenciar cookies",
   },
   "en-US": {
-    pageTitle: "LuckyDraw",
-    pageDescription: "Online raffle for names, numbers, and custom items.",
+    pageTitle: "LuckyDraw – Free Online Raffle | Names, Numbers, Wheel & More",
+    pageDescription: "Draw names, numbers, teams, spin a wheel, flip a coin and more. Free, no sign-up, runs entirely in your browser — the best online raffle tool!",
     brandTitle: "Raffle",
     brandName: "LuckyDraw",
     themeDark: "Dark theme",

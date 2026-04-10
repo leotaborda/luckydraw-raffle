@@ -3,11 +3,92 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LuckyDraw</title>
-    <meta
-      name="description"
-      content="Sorteador online de nomes, números e itens personalizados. Rápido, gratuito e fácil de usar."
-    />
+
+    <!-- Primary SEO -->
+    <title>LuckyDraw – Sorteador Online Grátis | Nomes, Números, Roleta e Mais</title>
+    <meta name="description" content="Sorteie nomes, números, equipes, letras, rode a roleta e muito mais — de graça, sem cadastro e direto no navegador. O melhor sorteador online!" />
+    <meta name="keywords" content="sorteador online, sorteio de nomes, sortear números, roleta online, sorteio grátis, sortear equipes, cara ou coroa, sorteador de letras, random name picker, lucky draw, raffle online, sorteio online grátis" />
+    <meta name="author" content="Leonardo Taborda" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Canonical & hreflang -->
+    <link rel="canonical" href="https://leotaborda.github.io/LuckyDraw/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://leotaborda.github.io/LuckyDraw/" />
+    <link rel="alternate" hreflang="en-US" href="https://leotaborda.github.io/LuckyDraw/" />
+    <link rel="alternate" hreflang="x-default" href="https://leotaborda.github.io/LuckyDraw/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://leotaborda.github.io/LuckyDraw/" />
+    <meta property="og:site_name" content="LuckyDraw" />
+    <meta property="og:title" content="LuckyDraw – Sorteador Online Grátis | Nomes, Números, Roleta e Mais" />
+    <meta property="og:description" content="Sorteie nomes, números, equipes, letras, rode a roleta e muito mais — de graça, sem cadastro e direto no navegador." />
+    <meta property="og:image" content="https://leotaborda.github.io/LuckyDraw/public/banner.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LuckyDraw – Sorteador Online Grátis" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale:alternate" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="LuckyDraw – Sorteador Online Grátis | Nomes, Números, Roleta e Mais" />
+    <meta name="twitter:description" content="Sorteie nomes, números, equipes, letras, rode a roleta e muito mais — de graça, sem cadastro e direto no navegador." />
+    <meta name="twitter:image" content="https://leotaborda.github.io/LuckyDraw/public/banner.png" />
+    <meta name="twitter:image:alt" content="LuckyDraw – Sorteador Online Grátis" />
+
+    <!-- PWA & Theme -->
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#09090f" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f4f0" />
+    <meta name="application-name" content="LuckyDraw" />
+    <meta name="apple-mobile-web-app-title" content="LuckyDraw" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="manifest.json" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "LuckyDraw",
+      "alternateName": "Sorteador Online",
+      "description": "Sorteador online gratuito para nomes, números, equipes, roleta, cara ou coroa e mais. Sem cadastro, 100% no navegador.",
+      "url": "https://leotaborda.github.io/LuckyDraw/",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "BRL"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Leonardo Taborda",
+        "url": "https://github.com/leotaborda"
+      },
+      "inLanguage": ["pt-BR", "en-US"],
+      "isAccessibleForFree": true,
+      "softwareVersion": "1.0.0",
+      "featureList": [
+        "Sorteio de nomes",
+        "Sorteio numérico",
+        "Sorteio de equipes",
+        "Roleta online",
+        "Cara ou coroa",
+        "Sorteio de letras",
+        "Timer surpresa",
+        "Modo eliminação"
+      ]
+    }
+    </script>
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="preconnect" href="https://flagcdn.com" crossorigin />
+
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
@@ -22,7 +103,7 @@
       <nav class="topnav">
         <div class="nav-brand">
           <div class="brand-icon" aria-hidden="true">
-            <img src="./favicon.ico" alt="" />
+            <img src="./public/favicon.ico" alt="" />
           </div>
           <span class="brand-name" data-i18n="brandTitle">Sorteador</span>
           <span class="brand-logo" data-i18n="brandName">LuckyDraw</span>
