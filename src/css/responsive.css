@@ -1,3 +1,22 @@
+/* ── Ad Sidebar ── */
+.ad-sidebar {
+  position: fixed;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  width: 120px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 1250px) {
+  .ad-sidebar {
+    display: none;
+  }
+}
+
 @media (max-width: 1024px) {
   .sorteador-grid,
   .special-layout {
