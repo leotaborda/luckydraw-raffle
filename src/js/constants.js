@@ -7,8 +7,8 @@ export const MEDALS = ["🥇", "🥈", "🥉"];
 export const HISTORY_MODES = ["names", "numbers", "items", "teams", "order", "coin", "letters", "wheel"];
 
 export const SAMPLE_DATA = {
-  names: ["Avery Stone", "Mila Carter", "Noah Bennett", "Iris Cole", "Theo Mercer", "Lena Park"],
-  items: ["Fone Premium", "Vale-presente", "Ingresso VIP", "Kit Café", "Notebook", "Luminária"],
+  names: ["Name 1", "Name 2", "Name 3", "Name 4", "Name 5", "Name 6"],
+  items: ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6"],
 };
 
 export const TEAM_COLORS = [
